@@ -6,8 +6,12 @@
             <div class="col-12">
                 <div class="col-12">
                     <div class="d-flex justify-content-between">
-                        <h2>Projects</h2>
-                        <a href="#" class="btn btn-sm btn-primary">Add project</a>
+                        <div>
+                            <h2>Projects</h2>
+                        </div>
+                        <div>
+                            <a href="{{ route('admin.projects.create') }}" class="btn btn-sm btn-primary">Add project</a>
+                        </div>
                     </div>
                 </div>
                 <div class="col-12">
