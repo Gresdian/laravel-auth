@@ -44,13 +44,13 @@ class ProjectController extends Controller
         $form_data = $request->all();
 
         $project = new Project();
-        $project->name = $form_data['name'];
-        $slug = Str::slug($project->name, '-');
-        $project->slug = $slug;
-        $project->description = $form_data['description'];
-        $project->date_start = $form_data['date_start'];
-        $project->date_end = $form_data['date_end'];
+
+        $slug = Str::slug($form_data['name'], '-');
+        $form_data['slug'] = $slug;
+        $project->fill($form_data);
+
         $project->save();
+
 
         return redirect()->route('admin.projects.index');
     }
@@ -74,7 +74,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -86,7 +86,13 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $form_data = $request->all();
+        $slug = Str::slug($form_data['name'], '-');
+        $form_data['slug'] = $slug;
+        $project->update($form_data);
+
+
+        return redirect()->route('admin.projects.index');
     }
 
     /**
@@ -97,6 +103,7 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        //
+        $project->delete();
+        return redirect()->route('admin.projects.index');
     }
 }

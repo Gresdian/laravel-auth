@@ -4,6 +4,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
+                <h2>Add new project</h2>
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul class="list-unstyled">
@@ -27,6 +28,9 @@
                         <label for="description" class="form-label">Description</label>
                         <textarea class="form-control @error('description') is-invalid @enderror" name="description" id="description"
                             cols="100" rows="10" value="{{ old('description') }}"></textarea>
+                        @error('description')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="row my-3">
                         <div class="col-6">
@@ -39,10 +43,7 @@
                         <div class="col-6">
                             <div class="form-group">
                                 <label class="form-label my-label" for="endDateProject">Finish Date Project</label>
-                                <input class="form-control" type="date" name="date_end" id="startDateProject" required>
-                                @error('description')
-                                    <div class="text-danger">{{ $message }}</div>
-                                @enderror
+                                <input class="form-control" type="date" name="date_end" id="endDateProject" required>
                             </div>
                         </div>
                     </div>
