@@ -14,13 +14,21 @@
                         </ul>
                     </div>
                 @endif
-                <form action="{{ route('admin.projects.store') }}" method="post">
+                <form action="{{ route('admin.projects.store') }}" method="post" enctype="multipart/form-data">
                     <div class="form-group my-3">
                         @csrf
                         <label for="title" class="control-label">Name</label>
                         <input type="text" name="name" id="name" placeholder="name" value="{{ old('name') }}"
                             class="form-control @error('name') is-invalid @enderror" required>
                         @error('name')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group my-3">
+                        <label for="cover_image" class="control-label">Update an image</label>
+                        <input class="form-control form-control-sm @error('img') is-invalid border-danger @enderror"
+                            type="file" name="cover_image" id="cover_image" accept="image/*">
+                        @error('cover_image')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>

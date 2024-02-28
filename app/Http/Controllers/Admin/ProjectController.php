@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 
 class ProjectController extends Controller
@@ -44,6 +45,11 @@ class ProjectController extends Controller
         $form_data = $request->all();
 
         $project = new Project();
+
+        if ($request->hasFile('cover_image')) {
+            $path = Storage::disk('public')->put('cover_image', $form_data['cover_image']);
+            $form_data['cover_image'] = $path;
+        }
 
         $slug = Str::slug($form_data['name'], '-');
         $form_data['slug'] = $slug;
@@ -87,6 +93,13 @@ class ProjectController extends Controller
     public function update(UpdateProjectRequest $request, Project $project)
     {
         $form_data = $request->all();
+        if ($request->hasfile('cover_image')) {
+            if ($project->cover_image != null) {
+                Storage::disk('public')->delete($project->cover_image);
+            }
+            $path = Storage::disk('public')->put('cover_image', $form_data['cover_image']);
+            $form_data['cover_image'] = $path;
+        }
         $slug = Str::slug($form_data['name'], '-');
         $form_data['slug'] = $slug;
         $project->update($form_data);
@@ -103,6 +116,9 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
+        if ($project->cover_image != null) {
+            Storage::disk('public')->delete($project->cover_image);
+        }
         $project->delete();
         return redirect()->route('admin.projects.index');
     }

@@ -13,7 +13,8 @@
                             @endforeach
                         </ul>
                     </div>
-                    <form action="{{ route('admin.projects.update', $project->id) }}" method="post">
+                    <form action="{{ route('admin.projects.update', $project->id) }}" method="post"
+                        enctype="multipart/form-data">
                 @endif
                 @method('PUT')
                 <div class="form-group my-3">
@@ -23,6 +24,20 @@
                         value="{{ old('name') ?? $project->name }}" class="form-control @error('name') is-invalid @enderror"
                         required>
                     @error('name')
+                        <div class="text-danger">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="form-group my-3">
+                    @if ($project->cover_image != null)
+                        <div class="my-3">
+                            <img src="{{ asset('/storage/' . $project->cover_image) }}" alt="{{ $project->name }}"
+                                width="100">
+                        </div>
+                    @endif
+                    <label for="cover_image" class="control-label">Update an image</label>
+                    <input class="form-control form-control-sm @error('img') is-invalid border-danger @enderror"
+                        type="file" name="cover_image" id="cover_image" accept="image/*">
+                    @error('cover_image')
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
